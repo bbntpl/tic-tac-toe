@@ -5,8 +5,10 @@ import { getLocalStorage, setLocalStorage } from './localStorage.js';
 //theme input DOM instances
 const themeInput = document.getElementById('theme-input');
 const themeKnobTxt = document.querySelector('#label-theme > .knob');
+
 // Wait for document to load
 document.addEventListener("DOMContentLoaded", function (e) {
+
     //default to dark theme
     const defaultTheme = document.documentElement.getAttribute("data-theme");
 
@@ -19,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     themeInput.checked = currentTheme === 'light' ? true : false;
 
     const switchToOtherTheme = (switchTheme) => {
+
         // Set our current theme to the new one
         document.documentElement.setAttribute("data-theme", switchTheme);
         setLocalStorage('theme', switchTheme);
@@ -27,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             themeKnobTxt.textContent = `${capitalizedStr} Theme`;
         }, 200);
     }
+    
     // when switch gets toggled
     themeInput.onchange = function (e) {
         const isCheckBoxChecked = e.target.checked;

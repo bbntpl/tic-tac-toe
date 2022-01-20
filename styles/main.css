@@ -39,8 +39,13 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition:  0.2s ease all;
+    transition: 0.2s ease all;
     background-color: var(--bg-color);
+}
+
+img {
+    width: 31px;
+    height: 31px;
 }
 
 /*** CONDITIONAL CLASSES ***/
@@ -87,6 +92,7 @@ body {
 
 .ttt {
     display: flex;
+    position: relative;
     flex-wrap: wrap;
     justify-content: space-between;
     align-content: space-between;
@@ -100,13 +106,17 @@ body {
 }
 
 .ttt__tiles {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
     background-color: var(--tiles-bg-color);
     width: 32%;
     height: 32%;
     cursor: pointer;
 }
 
-.ttt__tiles > *{
+.ttt__tiles>* {
     color: var(--bg-color);
 }
 
@@ -128,9 +138,52 @@ body {
 
 .ttt__outcome__overlay {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
+    width: 360px;
+    height: 360px;
+    top: 0px;
+    background: var(--overlay-bg-color);
+    border-radius: 20px;
+}
+
+.ttt__outcome__overlay>* {
+    position: absolute;
+    text-align: center;
+}
+
+.ttt__outcome__winner {
+    width: 139px;
+    height: 48px;
+    left: 110px;
+    top: 131px;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 48px;
+    text-align: center;
+    color: #000;
+    text-transform: uppercase;
+}
+
+.ttt__outcome__restart {
+    width: 145px;
+    height: 32px;
+    left: 107px;
+    top: 202px;
+    font-weight: 350;
+    font-size: 24px;
+    line-height: 32px;
+    color: var(--color-black-russian);
+}
+
+.ttt__tiles>* {
+    width: 76px;
+    height: 76px;
+}
+
+.xo{
+    position: absolute;
+    top: 0;
+    font-size: 100px;
+    text-align: center;
 }
 
 /*** FOOTER ***/
@@ -193,7 +246,7 @@ input[type="checkbox"] {
     position: absolute;
     align-items: center;
     justify-content: center;
-    color:  var(--ts-color);
+    color: var(--ts-color);
     font-size: 12px;
     font-weight: bold;
     word-wrap: break-word;
@@ -202,16 +255,12 @@ input[type="checkbox"] {
     z-index: 1;
 }
 
-.slider img {
-    width: 31px;
-    height: 31px;
-}
-
 .knob {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 0 1rem;
     width: 50%;
     height: 100%;
     font-size: 13px;

@@ -2,6 +2,7 @@ function bestMove() {
     // AI to make its turn
     let bestScore = -Infinity;
     let move;
+    const board = TTT.getSlots;
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         // Is the spot available?
@@ -21,8 +22,8 @@ function bestMove() {
   }
   
   let scores = {
-    X: 10,
-    O: -10,
+    x: 10,
+    o: -10,
     tie: 0
   };
   
