@@ -19,23 +19,45 @@
         <main class="ttt-container">
             <header class="ttt__current-user">Your turn</header>
             <div class="ttt">
+                <div class="ttt__tiles"></div>
+                <div class="ttt__tiles"></div>
+                <div class="ttt__tiles"></div>
+                <div class="ttt__tiles"></div>
+                <div class="ttt__tiles"></div>
+                <div class="ttt__tiles"></div>
+                <div class="ttt__tiles"></div>
+                <div class="ttt__tiles"></div>
+                <div class="ttt__tiles"></div>
                 <div class="ttt__outcome__overlay hide">
                     <h1 class="ttt__outcome__winner"></h1>
                     <h4 class="ttt__outcome__restart"></h4>
                 </div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
-                <div class="ttt__tiles"></div>
             </div>
             <div class="switches">
-                
+                <div class="switch">
+                    <input type="checkbox" id="switch-input1">
+                    <label id="label-player" class="slider rounded-border" for="switch-input1">
+                        <div class="knob"><p>Play with another player</p></div>
+                        <div id="player-level">
+                            <img src="assets/images/happy.png" />
+                        </div>
+                        <div id="ai-level">
+                            <img src="assets/images/demon.png" />
+                        </div>
+                    </label>
+                </div>
+                <div class="switch">
+                    <input type="checkbox" id="switch-input2">
+                    <label id="label-theme" class="slider rounded-border" for="switch-input2">
+                        <div class="knob">Dark Theme</div>
+                        <div id="light-mode">
+                            <img src="assets/images/sun.png" />
+                        </div>
+                        <div id="dark-mode">
+                            <img src="assets/images/moon.png" />
+                        </div>
+                    </label>
+                </div>
             </div>
         </main>
         <footer class="footer">
@@ -43,5 +65,7 @@
         </footer>
     </div>
 </body>
-
+<script src="index.js"></script>
+<script src="/src/theme.js"></script>
+<script src="/src/minimax.js"></script>
 </html>
