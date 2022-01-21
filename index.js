@@ -146,7 +146,7 @@ function changeTurn(currentPlayer, nextPlayer) {
     TTT.getTurn() === 'x' ? TTT.setTurn('o') : TTT.setTurn('x');
 }
 
-function endGame(isGameover, currentPlayer){
+function endGame(isGameover, currentPlayer) {
     displayController.toggleOverlay(isGameover);
     displayController.insertWinnerName(currentPlayer.getName());
 }
@@ -169,7 +169,14 @@ function startGame() {
     const p1 = TTT.getGamemode() === 'ai' ? Player('Player', 'x') : Player('Player1', 'x');
     const p2 = TTT.getGamemode() === 'ai' ? Player('AI', 'o') : Player('Player2', 'o');
     displayController.changeTurnText(p1.getName());
+    console.log(p2);
     //allow the first player to do the first move
+    if (TTT.getGamemode() === 'ai' && TTT.getTurn('o')) {
+        const currentPlayer = TTT.getTurn() === 'x' ? p1 : p2;
+        const nextPlayer = TTT.getTurn() === 'x' ? p2 : p1;
+        p2.move();
+        changeTurn(currentPlayer, nextPlayer);
+    }
     tilesEl.forEach((el, i) => {
         //Each move
         el.onclick = (e) => {
@@ -178,7 +185,7 @@ function startGame() {
             if (!TTT.getBoardPos(i)) {
                 displayController.insertPiece(el, TTT.getBoardPos(i), currentPlayer);
                 TTT.updateBoard(TTT.getTurn(), i);
-                changeTurn(currentPlayer,nextPlayer);
+                changeTurn(currentPlayer, nextPlayer);
             }
         };
     })
