@@ -1,7 +1,10 @@
-//DOM instances
+//Switch toggle mode instances
+const playerInput = document.getElementById('player-input');
+const playerInputLabel = document.querySelector('#label-player > .knob');
+
 const displayController = (() => {
     const tilesEl = document.querySelectorAll('.ttt__tiles');
-    const currentTurnEl = document.querySelector('.ttt__current-user');
+    const userTurnEl = document.querySelector('.ttt__current-user');
     const overlayEl = document.querySelector('.ttt__outcome__overlay');
     const winnerTxt = document.querySelector('.ttt__outcome__winner');
     const _clearTiles = () => {
@@ -11,21 +14,23 @@ const displayController = (() => {
             }
         });
     }
-    const insertPiece = (el, player) => {
-        if (player.getName() === 'AI' && el.target.textContent !== '') return;
+    const insertPiece = (el, tttTile, player) => {
+        if (el.textContent !== '' && tttTile !== '') return;
         const parent = document.createElement('div');
         parent.classList.add('xo');
         el.append(parent);
         parent.textContent = player.getPiece();
     }
-    const changeTurnText = (name) => {
-        currentTurnEl.textContent = `${name}\'s turn`;
-    }
-    const insertWinnerName = (name) => {
-        winnerTxt.textContent = `${name} won!`
-    }
-    const _hideOverlay = () => overlayEl.classList.add('hide');
-    const _showOverlay = () => overlayEl.classList.remove('show');
+    const changeTurnText = (name) => userTurnEl.textContent = `${name}\'s turn`;
+    const insertWinnerName = (name) => winnerTxt.textContent = `${name} won!`;
+    const _hideOverlay = () => {
+        overlayEl.classList.remove('show');
+        overlayEl.classList.add('hide');
+    };
+    const _showOverlay = () => {
+        overlayEl.classList.remove('hide');
+        overlayEl.classList.add('show');
+    };
     const toggleOverlay = (endGame) => endGame ? _showOverlay() : _hideOverlay();
     const redisplayGameboard = () => {
         _clearTiles();
@@ -46,7 +51,7 @@ const TTT = (() => {
     let currentTurn = 'x';
     let gamemode = localStorage.getItem('gamemode')
         ? localStorage.getItem('gamemode') : 'ai';
-    const slots =
+    const board =
         [['', '', ''],
         ['', '', ''],
         ['', '', '']];
@@ -65,36 +70,33 @@ const TTT = (() => {
         if (!n) return [0, 0];
         return [Math.ceil(n / 3) - 1, n % 3];
     }
-    const updateSlots = (piece, index) => {
-        const xy = _tileNumToIndices(index);
-        if (slots[xy[0]][xy[1]] === '') {
-            console.log(slots);
-            slots[xy[0]][xy[1]] = piece;
-        }
-    }
-
-    const clearSlots = () => slots.map(v => v.map(v => v = ''));
-    const filterFilledSlots = (outcome, piece) => {
-        const winningLen = outcome.filter(index => {
-            const pos = _tileNumToIndices(index);
-            slots[pos[0]][pos[1]] === piece;
-        }).length;
-        console.log(winningLen);
-        return winningLen === 3;
-    }
     const setTurn = (turn) => currentTurn = turn;
     const getTurn = () => currentTurn;
-    const getSlots = () => slots;
+    const getBoardPos = (i) => {
+        const xy = _tileNumToIndices(i);
+        return board[xy[0]][xy[1]];
+    };
+    const updateBoard = (piece, index) => {
+        const xy = _tileNumToIndices(index);
+        if (board[xy[0]][xy[1]] === '') {
+            board[xy[0]][xy[1]] = piece;
+        }
+    }
+    const clearBoard = () => board.map(v => v.map(v => v = ''));
+    const filterFilledBoard = (outcome, piece) => {
+        const winningLen = outcome.filter(index => getBoardPos(index) === piece).length;
+        return winningLen;
+    }
     const setGamemode = (newGamemode) => gamemode = newGamemode;
     const getGamemode = () => gamemode;
     const isThereAWinner = (piece) => {
-        const checkForAWinner = possibleOutcomes.find(outcome => filterFilledSlots(outcome, piece));
+        const checkForAWinner = possibleOutcomes.find(outcome => filterFilledBoard(outcome, piece) === 3);
         return !!checkForAWinner;
     }
     return {
-        updateSlots,
-        clearSlots,
-        getSlots,
+        updateBoard,
+        clearBoard,
+        getBoardPos,
         setTurn,
         getTurn,
         setGamemode,
@@ -121,57 +123,73 @@ const AI = (name, xo) => {
 
 //switch the opponent between a player and AI
 function toggleGamemode() {
-    const playerInput = document.getElementById('player-input');
-    const switchMode = () => {
-        console.log(TTT.getGamemode());
-        if (TTT.getGamemode() === 'ai') {
-            playerInput.checked = false;
-            return 'the AI'
-        } else {
-            playerInput.checked = true;
-            return 'another player';
-        }
+    const switchMode = (newGamemode) => {
+        //check the mode toggle switch if the mode is AI
+        playerInput.checked = newGamemode === 'ai' ? false : true;
+        return newGamemode === 'ai' ? 'the AI' : '2nd player';
     }
     playerInput.onchange = (e) => {
-        const newGamemode = TTT.setGamemode(e.checked ? 'ai' : 'player');
+        TTT.setGamemode(e.target.checked ? 'player' : 'ai');
         restartGame();
+        const newGamemode = TTT.getGamemode();
         setTimeout(() => {
-            e.target.textContent = `Play with ${switchMode()}`;
+            const switchModeLabel = `Play against ${switchMode(newGamemode)}`;
+            playerInputLabel.textContent = switchModeLabel;
             localStorage.setItem('gamemode', newGamemode);
         }, 200);
     }
 }
 
-function changeTurn(i) {
+function changeTurn(currentPlayer, nextPlayer) {
+    checkIfThereIsAWinner(currentPlayer);
+    displayController.changeTurnText(nextPlayer.getName());
     TTT.getTurn() === 'x' ? TTT.setTurn('o') : TTT.setTurn('x');
-    checkIfThereIsAWinner(i);
-}
-function checkIfThereIsAWinner(i) {
-    const isGameover = TTT.isThereAWinner(i, TTT.getTurn());
-    displayController.toggleOverlay(isGameover);
 }
 
+function endGame(isGameover, currentPlayer){
+    displayController.toggleOverlay(isGameover);
+    displayController.insertWinnerName(currentPlayer.getName());
+}
+function checkIfThereIsAWinner(currentPlayer) {
+    const isGameover = TTT.isThereAWinner(TTT.getTurn());
+    endGame(isGameover, currentPlayer);
+}
+
+function initializePreparationBeforeTTT() {
+    if (localStorage.getItem('gamemode') === 'player') {
+        playerInput.checked = true;
+        playerInputLabel.textContent = 'Play against 2nd player';
+    } else {
+        playerInput.checked = false;
+        playerInputLabel.textContent = 'Play against the AI';
+    }
+}
 function startGame() {
     const tilesEl = document.querySelectorAll('.ttt__tiles');
     const p1 = TTT.getGamemode() === 'ai' ? Player('Player', 'x') : Player('Player1', 'x');
     const p2 = TTT.getGamemode() === 'ai' ? Player('AI', 'o') : Player('Player2', 'o');
+    displayController.changeTurnText(p1.getName());
     //allow the first player to do the first move
     tilesEl.forEach((el, i) => {
         //Each move
         el.onclick = (e) => {
             const currentPlayer = TTT.getTurn() === 'x' ? p1 : p2;
-            displayController.insertPiece(el, currentPlayer);
-            TTT.updateSlots(TTT.getTurn(), i);
-            changeTurn(i);
+            const nextPlayer = TTT.getTurn() === 'x' ? p2 : p1;
+            if (!TTT.getBoardPos(i)) {
+                displayController.insertPiece(el, TTT.getBoardPos(i), currentPlayer);
+                TTT.updateBoard(TTT.getTurn(), i);
+                changeTurn(currentPlayer,nextPlayer);
+            }
         };
     })
 }
 
 function restartGame() {
-    TTT.clearSlots();
+    TTT.clearBoard();
     displayController.redisplayGameboard();
     startGame();
 }
 
 toggleGamemode();
+initializePreparationBeforeTTT();
 startGame();
