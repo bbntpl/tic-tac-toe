@@ -126,15 +126,12 @@ function toggleGamemode() {
     const switchMode = (newGamemode) => {
         //check the mode toggle switch if the mode is AI
         playerInput.checked = newGamemode === 'ai' ? false : true;
-        return newGamemode === 'ai' ? 'the AI' : '2nd player';
     }
     playerInput.onchange = (e) => {
         TTT.setGamemode(e.target.checked ? 'player' : 'ai');
         restartGame();
         const newGamemode = TTT.getGamemode();
         setTimeout(() => {
-            const switchModeLabel = `Play against ${switchMode(newGamemode)}`;
-            playerInputLabel.textContent = switchModeLabel;
             localStorage.setItem('gamemode', newGamemode);
         }, 200);
     }
@@ -158,10 +155,8 @@ function checkIfThereIsAWinner(currentPlayer) {
 function initializePreparationBeforeTTT() {
     if (localStorage.getItem('gamemode') === 'player') {
         playerInput.checked = true;
-        playerInputLabel.textContent = 'Play against 2nd player';
     } else {
         playerInput.checked = false;
-        playerInputLabel.textContent = 'Play against the AI';
     }
 }
 function startGame() {

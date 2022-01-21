@@ -98,8 +98,6 @@ img {
     align-content: space-between;
     width: 360px;
     height: 360px;
-    max-width: 360px;
-    max-height: 360px;
     border-radius: 20px;
     margin: 30px 0 0 0;
     background-color: transparent;
@@ -114,10 +112,6 @@ img {
     width: 32%;
     height: 32%;
     cursor: pointer;
-}
-
-.ttt__tiles>* {
-    color: var(--bg-color);
 }
 
 .ttt__tiles:nth-child(1) {
@@ -138,9 +132,9 @@ img {
 
 .ttt__outcome__overlay {
     position: absolute;
-    width: 360px;
-    height: 360px;
-    top: 0px;
+    width: inherit;
+    height: inherit;
+    top: 0;
     background: var(--overlay-bg-color);
     border-radius: 20px;
 }
@@ -148,12 +142,13 @@ img {
 .ttt__outcome__overlay>* {
     position: absolute;
     text-align: center;
+    cursor: pointer;
 }
 
 .ttt__outcome__winner {
     width: 139px;
     height: 48px;
-    left: 110px;
+    left: 98px;
     top: 131px;
     font-weight: bold;
     font-size: 36px;
@@ -161,13 +156,14 @@ img {
     text-align: center;
     color: #000;
     text-transform: uppercase;
+    text-align: center;
 }
 
 .ttt__outcome__restart {
-    width: 145px;
+    width: 260px;
     height: 32px;
-    left: 107px;
-    top: 202px;
+    left: 50px;
+    top: 250px;
     font-weight: 350;
     font-size: 24px;
     line-height: 32px;
@@ -175,11 +171,12 @@ img {
 }
 
 .ttt__tiles>* {
+    color: var(--bg-color);
     width: 76px;
     height: 76px;
 }
 
-.xo{
+.xo {
     position: absolute;
     top: 0;
     font-size: 100px;
@@ -189,6 +186,7 @@ img {
 /*** FOOTER ***/
 .footer {
     text-align: center;
+    font-size: 18px;
 }
 
 .footer a {
@@ -276,4 +274,78 @@ input[type="checkbox"] {
 #alright {
     right: 0;
     margin-left: 70px;
+}
+
+#player-level,
+#ai-level {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#player-level>div,
+#ai-level>div {
+    width: min-content;
+}
+
+/*** TABLET AND MOBILE BREAKPOINTS ***/
+@media screen and (max-height: 640px) and (orientation: landscape) {
+    .header-title {
+        font-size: 36px;
+        margin: 0 0 32px 0;
+    }
+    .xo {
+        font-size: 75px;
+    }
+    .ttt {
+        width: 260px;
+        height: 260px;
+    }
+    .ttt__outcome__winner {
+        left: 60px;
+        top: 65px;
+        font-size: 30px;
+    }
+    
+    .ttt__outcome__restart {
+        left: 0px;
+        top: 160px;
+        font-size: 18px;
+    }
+}
+@media screen and (max-width: 428px) {
+    .main-container{
+        padding: 24px 0;
+    }
+    .header-title {
+        font-size: 48px;
+        margin: 0 0 16px 0;
+    }
+    .ttt {
+        width: 300px;
+        height: 300px;
+    }
+    .xo {
+        font-size: 85px;
+    }
+
+    .ttt__current-user {
+        font-size: 20px;
+    }
+
+    .footer__copyright {
+        font-size: 15px;
+    }
+
+    .ttt__outcome__winner {
+        left: 75px;
+        top: 87px;
+        font-size: 30px;
+    }
+    
+    .ttt__outcome__restart {
+        left: 16px;
+        top: 200px;
+        font-size: 18px;
+    }
 }
