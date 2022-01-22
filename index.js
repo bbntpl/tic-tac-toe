@@ -203,7 +203,7 @@ const game = (() => {
 
                     //allow ai to set a move if it's AI turn
                     if (isAiTurn) {
-                        setTimeout(() => _AIMove(p1, p2), 100);
+                        setTimeout(() => _AIMove(p1, p2), 500);
                     }
                 }
             };
