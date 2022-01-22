@@ -220,9 +220,9 @@ img {
 }
 
 input:checked+.slider .knob {
-    -webkit-transform: translateX(93px);
-    -ms-transform: translateX(93px);
-    transform: translateX(93px);
+    -webkit-transform: translateX(96px);
+    -ms-transform: translateX(96px);
+    transform: translateX(96px);
 }
 
 input[type="checkbox"] {
