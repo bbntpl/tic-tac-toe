@@ -113,6 +113,27 @@ const TTT = (() => {
         }
         return openSpots === 0;
     }
+    const validateWinningConditions = (board) => {
+        let winner = null;
+        const equalize = (a, b, c) => a == b && b == c && a != '';
+        for (let i = 0; i < 3; i++) {
+            // horizontal pattern
+            if (equalize(board[i][0], board[i][1], board[i][2])) {
+                winner = board[i][0];
+            }
+            // vertical pattern
+            else if (equalize(board[0][i], board[1][i], board[2][i])) {
+                winner = board[0][i];
+            }
+        }
+        // diagonal pattern
+        if (equalize(board[0][0], board[1][1], board[2][2])) {
+            winner = board[0][0];
+        } else if (equalize(board[2][0], board[1][1], board[0][2])) {
+            winner = board[2][0];
+        }
+        return winner;
+    }
     return {
         updateBoard,
         clearBoard,
@@ -123,7 +144,8 @@ const TTT = (() => {
         setGamemode,
         getGamemode,
         isThereAWinner,
-        isBoardFull
+        isBoardFull,
+        validateWinningConditions
     }
 })();
 
@@ -152,28 +174,36 @@ const game = (() => {
         const p2 = TTT.getGamemode() === 'ai' ? AI('AI', 'o') : Player('Player2', 'o');
         return { p1, p2 }
     }
-    function _AIMove(p1, p2, currentPlayer) {
-        p2.move(p1, p2, currentPlayer);
+    function _AIMove(p1, p2) {
+        p2.move(p2);
         _changeTurn(p2, p1);
     }
 
     function _playerMove(p1, p2) {
         const tilesEl = document.querySelectorAll('.ttt__tiles');
         tilesEl.forEach((el, i) => {
-            //Each move
             el.onclick = (e) => {
                 const isAiCurrentPlayer = TTT.getGamemode() === 'ai' && TTT.getTurn() === 'o';
                 if (!TTT.getBoardPos(i) && !isAiCurrentPlayer) {
+                    //the following turns of the players
                     const currentPlayer = TTT.getTurn() === 'x' ? p1 : p2;
                     const nextPlayer = TTT.getTurn() === 'x' ? p2 : p1;
+
+                    //insert piece to the board after a click
                     displayController.insertPiece(el, TTT.getBoardPos(i), currentPlayer);
+
+                    //updates the board
                     TTT.updateBoard(TTT.getTurn(), i);
+
+                    //changes the turn of both player
                     _changeTurn(currentPlayer, nextPlayer);
+
+                    //change current turn to AI based on these conditions
                     const isAiTurn = TTT.getGamemode() === 'ai' && !TTT.isThereAWinner(currentPlayer.getPiece());
+
+                    //allow ai to set a move if it's AI turn
                     if (isAiTurn) {
-                        setTimeout(() => {
-                            _AIMove(p1, p2, currentPlayer);
-                        }, 700)
+                        setTimeout(() => _AIMove(p1, p2), 100);
                     }
                 }
             };
@@ -216,12 +246,8 @@ const game = (() => {
         TTT.getTurn() === 'x' ? TTT.setTurn('o') : TTT.setTurn('x');
     }
 
-    function equals3(a, b, c) {
-        return a == b && b == c && a != '';
-    }
-
     function checkBestMoveResult(board) {
-        let winner = TTT.isThereAWinner('o', board);
+        const winner = TTT.validateWinningConditions(board);
         if (winner == null && TTT.isBoardFull(board)) {
             return 'tie';
         } else {

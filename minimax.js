@@ -1,4 +1,4 @@
-function bestMove(P1, P2) {
+function bestMove(P2) {
   // AI to make its turn
   let bestScore = -Infinity;
   let move;
@@ -21,8 +21,7 @@ function bestMove(P1, P2) {
   game.updateBoard(ai, [move.i, move.j]);
 }
 
-let scores = { x: 1, o: -1, tie: 0 };
-
+let scores = { x:-1, o: 1, tie: 0 };
 function minimax(board, depth, isMaximizing) {
   let result = game.checkBestMoveResult(board);
   if (result !== null) {
@@ -33,7 +32,7 @@ function minimax(board, depth, isMaximizing) {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         // Is the spot available?
-        if (board[i][j] == '') {
+        if (board[i][j] === '') {
           board[i][j] = 'o';
           let score = minimax(board, depth + 1, false);
           board[i][j] = '';
@@ -47,7 +46,7 @@ function minimax(board, depth, isMaximizing) {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         // Is the spot available?
-        if (board[i][j] == '') {
+        if (board[i][j] === '') {
           board[i][j] = 'x';
           let score = minimax(board, depth + 1, true);
           board[i][j] = '';
