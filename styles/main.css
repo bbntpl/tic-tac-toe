@@ -54,7 +54,7 @@ img {
 }
 
 .show {
-    display: initial;
+    display: flex;
 }
 
 /*** OUTER COMPONENT ***/
@@ -131,6 +131,9 @@ img {
 }
 
 .ttt__outcome__overlay {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     width: inherit;
     height: inherit;
@@ -140,16 +143,12 @@ img {
 }
 
 .ttt__outcome__overlay>* {
-    position: absolute;
+    padding: 28px 40px;
     text-align: center;
     cursor: pointer;
 }
 
 .ttt__outcome__winner {
-    width: 139px;
-    height: 48px;
-    left: 98px;
-    top: 131px;
     font-weight: bold;
     font-size: 36px;
     line-height: 48px;
@@ -160,13 +159,8 @@ img {
 }
 
 .ttt__outcome__restart {
-    width: 260px;
-    height: 32px;
-    left: 50px;
-    top: 250px;
-    font-weight: 350;
-    font-size: 24px;
-    line-height: 32px;
+    font-weight: 300;
+    font-size: 18px;
     color: var(--color-black-russian);
 }
 
@@ -289,44 +283,57 @@ input[type="checkbox"] {
 }
 
 /*** TABLET AND MOBILE BREAKPOINTS ***/
+@media screen and (max-width: 744px) {
+    .header-title {
+        font-size: 48px;
+    }
+}
+
 @media screen and (max-height: 640px) and (orientation: landscape) {
     .header-title {
         font-size: 36px;
         margin: 0 0 32px 0;
     }
+
     .xo {
         font-size: 75px;
     }
+
     .ttt {
         width: 260px;
         height: 260px;
     }
+
     .ttt__outcome__winner {
-        left: 60px;
-        top: 65px;
         font-size: 30px;
     }
-    
+
     .ttt__outcome__restart {
-        left: 0px;
-        top: 160px;
-        font-size: 18px;
+        font-size: 17px;
     }
 }
+
 @media screen and (max-width: 428px) {
-    .main-container{
+    .main-container {
         padding: 24px 0;
     }
+
     .header-title {
-        font-size: 48px;
+        font-size: 36px;
         margin: 0 0 16px 0;
     }
+
     .ttt {
         width: 300px;
         height: 300px;
     }
+
     .xo {
         font-size: 85px;
+    }
+
+    .ttt-container>* {
+        margin: 15px 0;
     }
 
     .ttt__current-user {
@@ -338,14 +345,10 @@ input[type="checkbox"] {
     }
 
     .ttt__outcome__winner {
-        left: 75px;
-        top: 87px;
         font-size: 30px;
     }
-    
+
     .ttt__outcome__restart {
-        left: 16px;
-        top: 200px;
-        font-size: 18px;
+        font-size: 15px;
     }
 }
